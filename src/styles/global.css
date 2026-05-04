@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  /* 🎨 Colores */
+  --color-ink: #0B1B2B;
+  --color-navy: #102A43;
+  --color-deep: #0A1F38;
+  --color-accent: #C8A45C;
+  --color-cream: #FAF7F1;
+  --color-line: #E6E1D6;
+  --color-testcolor: #ff0000;
+
+  /* 🔤 Tipografías */
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: "Fraunces", Georgia, serif;
+
+  /* 📏 Layout */
+  --container-prose: 70ch;
+}
