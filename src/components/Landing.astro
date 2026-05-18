@@ -1,3 +1,6 @@
+---
+import Logo from '../../public/favicon-2.svg'
+---
 <div class="bg-cream text-ink antialiased">
 
   <!-- Accessibility: skip to main content -->
@@ -11,7 +14,7 @@
   <header class="sticky top-0 z-40 backdrop-blur bg-cream/85 border-b border-line">
     <nav class="mx-auto max-w-7xl px-5 lg:px-8 h-16 flex items-center justify-between" aria-label="Navegación principal">
       <a href="#inicio" class="flex items-center gap-2 group">
-        <span class="inline-flex items-center justify-center w-9 h-9 rounded-md bg-navy text-cream font-serif font-semibold tracking-tight">Σ</span>
+        <Logo class='w-30 h-30 text-navy' /><!-- <span class="inline-flex items-center justify-center w-9 h-9 rounded-md bg-navy text-cream font-serif font-semibold tracking-tight">Σ</span>-->
         <span class="font-serif font-semibold text-lg text-navy">SIAM Cali</span>
       </a>
 
@@ -300,6 +303,15 @@
         </ul>
 
         <!-- Events: upcoming + past -->
+
+        <!--  **Virtual · 30 de mayo de 2026**
+
+## Segunda reunión general del capítulo
+
+Presentaremos el diseño oficial de las camisas del capítulo, compartiremos avances en nuestras redes institucionales y contaremos con una charla especial del profesor Jan Pierre Agenciano da Silva Rocha sobre su trayectoria académica y profesional.
+
+Además, anunciaremos la participación de Juan Diego Collazos como representante estudiantil del capítulo en Cleveland durante la reunión anual de la Society for Industrial and Applied Mathematics (SIAM).
+-->
         <div class="mt-20 grid lg:grid-cols-2 gap-8">
           <!-- Upcoming -->
           <div>
@@ -311,11 +323,12 @@
               <div class="flex flex-wrap items-center gap-3 mb-4">
                 <span class="text-xs font-semibold tracking-wide uppercase text-accent">Virtual</span>
                 <span class="text-ink/40">·</span>
-                <time class="text-sm text-ink/70" datetime="2026-04-20">20 de abril de 2026</time>
+                <time class="text-sm text-ink/70" datetime="2026-04-20">30 de mayo de 2026</time>
               </div>
-              <h4 class="font-serif text-xl font-semibold text-navy">Primeros avances</h4>
+              <h4 class="font-serif text-xl font-semibold text-navy">Segunda reunión general del capítulo</h4>
               <p class="mt-3 text-ink/75 leading-relaxed text-[0.95rem]">
-                Presentación del diseño y contenido de la página del capítulo, discusión sobre la propuesta de camisas oficiales y anuncio de la publicación de un artículo. Se asignarán tareas — incluida la creación del correo oficial y la organización del perfil de LinkedIn — y algunos integrantes expondrán los proyectos en los que están trabajando.
+                Presentaremos el diseño oficial de las camisas del capítulo, compartiremos avances en nuestras redes institucionales y contaremos con una charla especial del profesor Jan Pierre Agenciano da Silva Rocha sobre su trayectoria académica y profesional.
+                Además, anunciaremos la participación de Juan Diego Collazos como representante estudiantil del capítulo en Cleveland durante la reunión anual de la Society for Industrial and Applied Mathematics (SIAM).
               </p>
             </article>
           </div>
@@ -335,6 +348,17 @@
               <h4 class="font-serif text-xl font-semibold text-navy">¡Bienvenida!</h4>
               <p class="mt-3 text-ink/75 leading-relaxed text-[0.95rem]">
                 Primera reunión oficial del capítulo, con la participación virtual de la presidenta del capítulo de Medellín. Los integrantes se conocieron, compartieron sus áreas de interés y se definieron las tareas iniciales para la siguiente reunión.
+              </p>
+            </article>
+            <article class="rounded-2xl border border-line bg-white p-7">
+              <div class="flex flex-wrap items-center gap-3 mb-4">
+                <span class="text-xs font-semibold tracking-wide uppercase text-ink/60">Virtual</span>
+                <span class="text-ink/40">·</span>
+                <time class="text-sm text-ink/70" datetime="2026-04-20">20 de abril de 2026</time>
+              </div>
+              <h4 class="font-serif text-xl font-semibold text-navy">Primeros avances</h4>
+              <p class="mt-3 text-ink/75 leading-relaxed text-[0.95rem]">
+                Presentación del diseño y contenido de la página del capítulo, discusión sobre la propuesta de camisas oficiales y anuncio de la publicación de un artículo. Se asignarán tareas — incluida la creación del correo oficial y la organización del perfil de LinkedIn — y algunos integrantes expondrán los proyectos en los que están trabajando.
               </p>
             </article>
           </div>
@@ -471,20 +495,42 @@
           <h3 class="font-serif text-xl font-semibold text-navy mb-6">Profesores</h3>
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <div class="rounded-xl border border-line bg-white p-6">
-              <p class="text-xs uppercase tracking-widest text-accent">Profesor</p>
+              <p class="text-xs uppercase tracking-widest text-accent">Profesor Lider (UNICAMACHO)</p>
               <p class="font-serif text-lg text-navy mt-2">Abel Álvarez Bustos</p>
               <p class="text-sm text-ink/70 mt-1">Pontificia Universidad Javeriana Cali</p>
             </div>
+
+             <div class="rounded-xl border border-line bg-white p-6">
+              <p class="text-xs uppercase tracking-widest text-accent">Profesor Lider (PUJ)</p>
+              <p class="font-serif text-lg text-navy mt-2">Andrés Julián Castrillón Vásquez</p>
+              <p class="text-sm text-ink/70 mt-1">Institución Universitaria Antonio José Camacho</p>
+            </div>
+
             <div class="rounded-xl border border-line bg-white p-6">
               <p class="text-xs uppercase tracking-widest text-accent">Profesor</p>
               <p class="font-serif text-lg text-navy mt-2">Carlos Ernesto Ramírez Ovalle</p>
               <p class="text-sm text-ink/70 mt-1">Pontificia Universidad Javeriana Cali</p>
             </div>
+           
+
             <div class="rounded-xl border border-line bg-white p-6">
-              <p class="text-xs uppercase tracking-widest text-accent">Profesor</p>
-              <p class="font-serif text-lg text-navy mt-2">Andrés Julián Castrillón Vásquez</p>
+              <p class="text-xs uppercase tracking-widest text-accent">Profesora</p>
+              <p class="font-serif text-lg text-navy mt-2">Liliana Andrea Potosí Cruz</p>
               <p class="text-sm text-ink/70 mt-1">Institución Universitaria Antonio José Camacho</p>
             </div>
+
+            <div class="rounded-xl border border-line bg-white p-6">
+              <p class="text-xs uppercase tracking-widest text-accent">Profesor</p>
+              <p class="font-serif text-lg text-navy mt-2">Alexander Arevalo Soto</p>
+              <p class="text-sm text-ink/70 mt-1">Institución Universitaria Antonio José Camacho</p>
+            </div>
+
+            <div class="rounded-xl border border-line bg-white p-6">
+              <p class="text-xs uppercase tracking-widest text-accent">Profesor</p>
+              <p class="font-serif text-lg text-navy mt-2">Cristian Eduardo García Bermúdez</p>
+              <p class="text-sm text-ink/70 mt-1">Institución Universitaria Antonio José Camacho</p>
+            </div>
+
           </div>
         </div>
       </div>
@@ -617,7 +663,7 @@
           <dl class="mt-10 space-y-5 text-[0.95rem]">
             <div>
               <dt class="text-xs uppercase tracking-widest text-ink/50">Correo electrónico</dt>
-              <dd class="font-serif text-lg text-navy mt-1 italic text-ink/40">Próximamente</dd>
+              <dd class="font-serif text-lg text-navy mt-1 italic text-ink/40">siamchaptercali@gmail.com</dd>
             </div>
             <div class="grid grid-cols-3 gap-4">
               <div>
@@ -626,7 +672,16 @@
               </div>
               <div>
                 <dt class="text-xs uppercase tracking-widest text-ink/50">LinkedIn</dt>
-                <dd class="font-serif text-navy mt-1 italic text-ink/40">Próximamente</dd>
+                <dd class="font-serif text-navy mt-1 italic text-ink/40">
+                <a
+                    href="https://www.linkedin.com/company/siamchaptercali/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="font-serif italic text-navy hover:text-navy/80 underline underline-offset-4 break-words"
+                  >
+                    linkedin.com/company/siamchaptercali
+                  </a>
+                </dd>
               </div>
               <div>
                 <dt class="text-xs uppercase tracking-widest text-ink/50">GitHub</dt>
