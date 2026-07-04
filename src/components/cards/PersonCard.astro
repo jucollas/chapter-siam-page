@@ -1,0 +1,101 @@
+---
+const { person } = Astro.props;
+
+const studentRoleLabels = {
+  president: "Presidente",
+  vicePresident: "Vicepresidente",
+  secretary: "Secretario",
+  treasurer: "Tesorero",
+  member: "Miembro",
+};
+
+const facultyRoleLabels = {
+  leadPUJ: "Profesor líder (PUJ)",
+  leadUNIAJC: "Profesor líder (UNIAJC)",
+  professor: "Profesor",
+};
+
+function normalizeText(value) {
+  if (value === null || value === undefined) return "";
+
+  return String(value)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "");
+}
+
+function getStudentRole(person) {
+  if (person.studentRole) return person.studentRole;
+
+  const legacyRole = normalizeText(person.role);
+
+  if (legacyRole.includes("vice")) return "vicePresident";
+  if (legacyRole.includes("president")) return "president";
+  if (legacyRole.includes("secretar")) return "secretary";
+  if (legacyRole.includes("tesorer")) return "treasurer";
+
+  return "member";
+}
+
+function getFacultyRole(person) {
+  if (person.facultyRole) return person.facultyRole;
+
+  const legacyRole = normalizeText(person.role);
+
+  if (legacyRole.includes("puj") || legacyRole.includes("javeriana")) {
+    return "leadPUJ";
+  }
+
+  if (legacyRole.includes("uniajc") || legacyRole.includes("antonio jose")) {
+    return "leadUNIAJC";
+  }
+
+  return "professor";
+}
+
+const label =
+  person.category === "student" || person.category === "officer"
+    ? studentRoleLabels[getStudentRole(person)]
+    : person.category === "faculty"
+      ? facultyRoleLabels[getFacultyRole(person)]
+      : person.role || "Integrante";
+---
+
+<article class="rounded-xl border border-line bg-white p-6">
+  <p class="text-xs uppercase tracking-widest text-accent">
+    {label}
+  </p>
+
+  <p class="mt-2 font-serif text-lg text-navy">
+    {person.name}
+  </p>
+
+  {person.institution && (
+    <p class="mt-1 text-sm text-ink/70">
+      {person.institution}
+    </p>
+  )}
+
+  {person.interestAreas && (
+    <p class="mt-3 text-sm leading-relaxed text-ink/70">
+      {person.interestAreas}
+    </p>
+  )}
+
+  {person.bio && (
+    <p class="mt-4 text-sm leading-relaxed text-ink/75">
+      {person.bio}
+    </p>
+  )}
+
+  {person.link && (
+    <a
+      href={person.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-4 inline-flex text-sm font-semibold text-navy hover:text-accent"
+    >
+      Ver perfil →
+    </a>
+  )}
+</article>

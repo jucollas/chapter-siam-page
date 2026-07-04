@@ -24,3 +24,10 @@ pnpm-debug.log*
 .idea/
 
 .vscode/
+.vercel
+
+.ndjson
+
+# Kate/editor swap files
+*.kate-swp
+.*.kate-swp

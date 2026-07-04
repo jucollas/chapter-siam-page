@@ -1,0 +1,300 @@
+---
+const { people = [], showIntro = true, showFullLink = false } = Astro.props;
+
+const studentRoleLabels = {
+  president: "Presidente",
+  vicePresident: "Vicepresidente",
+  secretary: "Secretario",
+  treasurer: "Tesorero",
+  member: "Miembro",
+};
+
+const studentRoleOrder = {
+  president: 0,
+  vicePresident: 1,
+  secretary: 2,
+  treasurer: 3,
+  member: 4,
+};
+
+const facultyRoleCardLabels = {
+  leadPUJ: "PROFESOR LÍDER (PUJ)",
+  leadUNIAJC: "PROFESOR LÍDER (UNIAJC)",
+  professor: "PROFESOR",
+};
+
+const facultyRoleOrder = {
+  leadPUJ: 0,
+  leadUNIAJC: 1,
+  professor: 2,
+};
+
+const administrationRoles = [
+  "president",
+  "vicePresident",
+  "secretary",
+  "treasurer",
+];
+
+function normalizeText(value) {
+  if (value === null || value === undefined) return "";
+
+  return String(value)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "");
+}
+
+function getStudentRole(person) {
+  if (person.studentRole) return person.studentRole;
+
+  const legacyRole = normalizeText(person.role);
+
+  if (legacyRole.includes("vice")) return "vicePresident";
+  if (legacyRole.includes("president")) return "president";
+  if (legacyRole.includes("secretar")) return "secretary";
+  if (legacyRole.includes("tesorer")) return "treasurer";
+
+  return "member";
+}
+
+function getFacultyRole(person) {
+  if (person.facultyRole) return person.facultyRole;
+
+  const legacyRole = normalizeText(person.role);
+
+  if (legacyRole.includes("puj") || legacyRole.includes("javeriana")) {
+    return "leadPUJ";
+  }
+
+  if (legacyRole.includes("uniajc") || legacyRole.includes("antonio jose")) {
+    return "leadUNIAJC";
+  }
+
+  return "professor";
+}
+
+function getLastName(person) {
+  if (person.lastName) return person.lastName;
+
+  const parts = person.name?.trim().split(/\s+/) || [];
+
+  if (parts.length >= 3) {
+    return parts.slice(1).join(" ");
+  }
+
+  return person.name || "";
+}
+
+const students = people.filter((person) =>
+  person.category === "student" || person.category === "officer"
+);
+
+const faculty = people.filter((person) => person.category === "faculty");
+
+const sortedStudents = [...students].sort((a, b) => {
+  const roleA = getStudentRole(a);
+  const roleB = getStudentRole(b);
+
+  const orderA = studentRoleOrder[roleA] ?? 99;
+  const orderB = studentRoleOrder[roleB] ?? 99;
+
+  if (orderA !== orderB) return orderA - orderB;
+
+  if (roleA === "member" && roleB === "member") {
+    return getLastName(a).localeCompare(getLastName(b), "es", {
+      sensitivity: "base",
+    });
+  }
+
+  return (a.name || "").localeCompare(b.name || "", "es", {
+    sensitivity: "base",
+  });
+});
+
+const administrationStudents = sortedStudents.filter((person) =>
+  administrationRoles.includes(getStudentRole(person))
+);
+
+const sortedFaculty = [...faculty].sort((a, b) => {
+  const roleA = getFacultyRole(a);
+  const roleB = getFacultyRole(b);
+
+  const orderA = facultyRoleOrder[roleA] ?? 99;
+  const orderB = facultyRoleOrder[roleB] ?? 99;
+
+  if (orderA !== orderB) return orderA - orderB;
+
+  return (a.name || "").localeCompare(b.name || "", "es", {
+    sensitivity: "base",
+  });
+});
+---
+
+<section id="integrantes" class="border-b border-line py-24 lg:py-32">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    {showIntro && (
+      <div class="max-w-3xl">
+        <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+          05 — Integrantes
+        </p>
+
+        <h2 class="font-serif text-3xl font-semibold leading-tight text-navy lg:text-5xl">
+          Tan diversos como los problemas que queremos resolver.
+        </h2>
+
+        <p class="mt-6 text-lg leading-relaxed text-ink/70">
+          Estudiantes y profesores de distintas carreras y universidades de Cali,
+          unidos por el interés en las matemáticas aplicadas y la computación
+          científica.
+        </p>
+      </div>
+    )}
+
+    <div class={showIntro ? "mt-14" : ""}>
+      <h3 class="mb-6 font-serif text-2xl font-semibold text-navy">
+        Dirección del capítulo
+      </h3>
+
+      {administrationStudents.length > 0 ? (
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {administrationStudents.map((person) => {
+            const role = getStudentRole(person);
+
+            return (
+              <article class="rounded-xl bg-navy p-7 text-cream">
+                <p class="text-xs font-medium uppercase tracking-[0.25em] text-accent">
+                  {studentRoleLabels[role]}
+                </p>
+
+                <h4 class="mt-4 font-serif text-2xl leading-snug text-cream">
+                  {person.name}
+                </h4>
+              </article>
+            );
+          })}
+        </div>
+      ) : (
+        <p class="rounded-2xl border border-line bg-white p-7 text-ink/75">
+          Aún no hay estudiantes con cargos administrativos publicados.
+        </p>
+      )}
+    </div>
+
+    <div class="mt-20">
+      <h3 class="mb-8 font-serif text-2xl font-semibold text-navy">
+        Estudiantes
+      </h3>
+
+      {sortedStudents.length > 0 ? (
+        <div class="overflow-hidden rounded-2xl border border-line bg-white">
+          <div class="overflow-x-auto">
+            <table class="min-w-full border-collapse">
+              <thead class="bg-cream/60">
+                <tr>
+                  <th class="px-6 py-5 text-left text-xs font-semibold uppercase tracking-[0.2em] text-ink/65">
+                    Nombre
+                  </th>
+                  <th class="px-6 py-5 text-left text-xs font-semibold uppercase tracking-[0.2em] text-ink/65">
+                    Área de interés
+                  </th>
+                  <th class="px-6 py-5 text-left text-xs font-semibold uppercase tracking-[0.2em] text-ink/65">
+                    Universidad
+                  </th>
+                  <th class="px-6 py-5 text-left text-xs font-semibold uppercase tracking-[0.2em] text-ink/65">
+                    Rol
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody class="divide-y divide-line">
+                {sortedStudents.map((person) => {
+                  const role = getStudentRole(person);
+                  const isAdministrationRole = administrationRoles.includes(role);
+
+                  return (
+                    <tr class="transition hover:bg-cream/45">
+                      <td class="whitespace-nowrap px-6 py-5 font-semibold text-navy">
+                        {person.name}
+                      </td>
+
+                      <td class="px-6 py-5 text-ink/75">
+                        {person.interestAreas || "—"}
+                      </td>
+
+                      <td class="px-6 py-5 text-ink/75">
+                        {person.institution || "—"}
+                      </td>
+
+                      <td class="whitespace-nowrap px-6 py-5">
+                        {isAdministrationRole ? (
+                          <span class="inline-flex rounded-full bg-cream px-4 py-1 text-sm font-semibold text-navy">
+                            {studentRoleLabels[role]}
+                          </span>
+                        ) : (
+                          <span class="text-ink/55">
+                            {studentRoleLabels[role]}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ) : (
+        <p class="rounded-2xl border border-line bg-white p-7 text-ink/75">
+          Aún no hay estudiantes publicados.
+        </p>
+      )}
+    </div>
+
+    <div class="mt-20">
+      <h3 class="mb-8 font-serif text-2xl font-semibold text-navy">
+        Profesores
+      </h3>
+
+      {sortedFaculty.length > 0 ? (
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {sortedFaculty.map((person) => {
+            const role = getFacultyRole(person);
+
+            return (
+              <article class="rounded-xl border border-line bg-white p-7 transition hover:-translate-y-1 hover:shadow-lg">
+                <p class="text-xs font-medium uppercase tracking-[0.25em] text-accent">
+                  {facultyRoleCardLabels[role] || "PROFESOR"}
+                </p>
+
+                <h4 class="mt-4 font-serif text-2xl leading-snug text-navy">
+                  {person.name}
+                </h4>
+
+                {person.institution && (
+                  <p class="mt-3 text-[0.95rem] leading-relaxed text-ink/70">
+                    {person.institution}
+                  </p>
+                )}
+              </article>
+            );
+          })}
+        </div>
+      ) : (
+        <p class="rounded-2xl border border-line bg-white p-7 text-ink/75">
+          Aún no hay profesores publicados.
+        </p>
+      )}
+    </div>
+
+    {showFullLink && (
+      <a
+        href="/equipo"
+        class="mt-10 inline-flex items-center gap-2 rounded-full bg-navy px-7 py-3 font-semibold text-cream transition hover:bg-deep"
+      >
+        Ver todos los integrantes
+        <span aria-hidden="true">→</span>
+      </a>
+    )}
+  </div>
+</section>

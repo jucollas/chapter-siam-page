@@ -1,0 +1,51 @@
+---
+import ResourceCard from "../cards/ResourceCard.astro";
+
+const { resources = [] } = Astro.props;
+
+const fallbackResources = [
+  {
+    title: "Sitio oficial de SIAM",
+    description: "Publicaciones, eventos internacionales y recursos para capítulos estudiantiles.",
+    category: "link",
+    url: "https://www.siam.org",
+  },
+  {
+    title: "Apoyo económico",
+    description: "El capítulo recibe recursos anuales de SIAM destinados a cubrir honorarios de ponentes, tiquetes aéreos, alojamiento y alimentación de invitados, así como apoyar la participación de hasta 4 integrantes por año en actividades académicas.",
+    category: "document",
+  },
+  {
+    title: "Materiales de nivelación",
+    description: "Publicamos las presentaciones y grabaciones de nuestras charlas internas para que todos los integrantes puedan acceder a ellas en cualquier momento.",
+    category: "workshop_material",
+  },
+  {
+    title: "Recursos recomendados",
+    description: "Una selección curada de libros, cursos, artículos y herramientas recomendadas por el equipo.",
+    category: "document",
+  },
+];
+
+const shownResources = resources.length > 0 ? resources.slice(0, 4) : fallbackResources;
+---
+
+<section id="recursos" class="border-b border-line bg-white py-24 lg:py-32">
+  <div class="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-12 lg:px-8">
+    <div class="lg:col-span-4">
+      <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+        06 — Recursos
+      </p>
+      <h2 class="font-serif text-3xl font-semibold leading-tight text-navy lg:text-5xl">
+        Recursos y comunidad
+      </h2>
+      <p class="mt-6 leading-relaxed text-ink/70">
+        Como capítulo afiliado a SIAM internacional, accedemos a una red global de recursos académicos y profesionales — útiles tanto para nuestros integrantes como para quienes están considerando unirse.
+      </p>
+    </div>
+
+    <ul class="space-y-5 lg:col-span-8">
+      {shownResources.map((resource) => <ResourceCard resource={resource} />)}
+    </ul>
+  </div>
+</section>

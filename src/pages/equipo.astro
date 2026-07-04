@@ -1,0 +1,71 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/common/Navbar.astro";
+import Footer from "../components/common/Footer.astro";
+import TeamDirectory from "../components/common/TeamDirectory.astro";
+
+import { sanityClient } from "sanity:client";
+import { allPeopleQuery } from "../lib/queries";
+
+const people = await sanityClient.fetch(allPeopleQuery);
+---
+
+<Layout>
+  <div class="bg-cream text-ink antialiased">
+    <Navbar />
+
+    <main>
+      <section class="relative overflow-hidden bg-navy text-cream">
+        <div class="absolute inset-0 math-grid opacity-50" aria-hidden="true"></div>
+        <div class="absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full ring-glow" aria-hidden="true"></div>
+
+        <div class="relative mx-auto max-w-7xl px-5 py-24 lg:px-8 lg:py-32">
+          <p class="mb-6 text-xs font-medium uppercase tracking-[0.25em] text-accent lg:text-sm">
+            05 — Integrantes
+          </p>
+
+          <h1 class="max-w-4xl font-serif text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-7xl">
+            Equipo del capítulo
+          </h1>
+
+          <p class="mt-8 max-w-2xl text-base leading-relaxed text-cream/70 lg:text-lg">
+            Estudiantes y profesores de distintas carreras y universidades de
+            Cali, unidos por el interés en las matemáticas aplicadas, la
+            computación científica y el trabajo interdisciplinar.
+          </p>
+        </div>
+      </section>
+
+      <TeamDirectory people={people} showIntro={false} showFullLink={false} />
+
+      <section class="relative overflow-hidden bg-navy py-24 text-cream lg:py-32">
+        <div class="absolute inset-0 math-grid opacity-30" aria-hidden="true"></div>
+
+        <div class="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
+          <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+            Participa
+          </p>
+
+          <h2 class="font-serif text-4xl font-semibold leading-tight lg:text-6xl">
+            ¿Quieres hacer parte del capítulo?
+          </h2>
+
+          <p class="mt-8 text-lg leading-relaxed text-cream/80">
+            Siempre estamos abiertos a recibir nuevos integrantes con curiosidad,
+            disposición para aprender y ganas de trabajar en equipo.
+          </p>
+
+          <a
+            href="/contacto"
+            class="mt-10 inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-lg font-semibold text-deep transition hover:bg-accent/90"
+          >
+            Quiero unirme
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>

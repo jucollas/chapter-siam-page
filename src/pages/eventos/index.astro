@@ -1,0 +1,65 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/common/Navbar.astro";
+import Footer from "../../components/common/Footer.astro";
+import PageHero from "../../components/common/PageHero.astro";
+import EventCard from "../../components/cards/EventCard.astro";
+
+import { sanityClient } from "sanity:client";
+import { upcomingEventsQuery, pastEventsQuery } from "../../lib/queries";
+
+const upcomingEvents = await sanityClient.fetch(upcomingEventsQuery);
+const pastEvents = await sanityClient.fetch(pastEventsQuery);
+---
+
+<Layout>
+  <div class="bg-cream text-ink antialiased">
+    <Navbar />
+
+    <PageHero
+      eyebrow="04 — Vida del capítulo"
+      title="Actividades y eventos"
+      description="La actividad académica y comunitaria del capítulo SIAM Cali será constante. Organizamos y participamos en distintos espacios a lo largo del año."
+    />
+
+    <main class="border-b border-line py-24 lg:py-32">
+      <div class="mx-auto max-w-7xl px-5 lg:px-8">
+        <section>
+          <h2 class="mb-6 flex items-center gap-3 font-serif text-2xl font-semibold text-navy">
+            <span class="h-2 w-2 animate-pulse rounded-full bg-accent"></span>
+            Próximos eventos
+          </h2>
+
+          {upcomingEvents.length > 0 ? (
+            <div class="grid gap-6 lg:grid-cols-2">
+              {upcomingEvents.map((event) => <EventCard event={event} />)}
+            </div>
+          ) : (
+            <p class="rounded-2xl border border-line bg-white p-7 text-ink/75">
+              No hay eventos futuros publicados por ahora.
+            </p>
+          )}
+        </section>
+
+        <section class="mt-20">
+          <h2 class="mb-6 flex items-center gap-3 font-serif text-2xl font-semibold text-navy">
+            <span class="h-2 w-2 rounded-full bg-ink/30"></span>
+            Eventos pasados
+          </h2>
+
+          {pastEvents.length > 0 ? (
+            <div class="grid gap-6 lg:grid-cols-2">
+              {pastEvents.map((event) => <EventCard event={event} />)}
+            </div>
+          ) : (
+            <p class="rounded-2xl border border-line bg-white p-7 text-ink/75">
+              Aún no hay eventos pasados publicados.
+            </p>
+          )}
+        </section>
+      </div>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>

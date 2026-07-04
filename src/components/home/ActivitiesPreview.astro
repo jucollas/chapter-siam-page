@@ -1,0 +1,117 @@
+---
+import EventCard from "../cards/EventCard.astro";
+
+const { upcomingEvents = [], pastEvents = [] } = Astro.props;
+
+const fallbackUpcoming = [
+  {
+    title: "Segunda reunión general del capítulo",
+    slug: "segunda-reunion-general-del-capitulo",
+    modality: "online",
+    type: "meeting",
+    startDate: "2026-05-30T10:00:00",
+    location: "Virtual",
+    speaker: "Jan Pierre Agenciano da Silva Rocha",
+  },
+];
+
+const fallbackPast = [
+  {
+    title: "¡Bienvenida!",
+    slug: "bienvenida",
+    modality: "in_person",
+    type: "meeting",
+    startDate: "2026-03-14T10:00:00",
+    location: "Presencial",
+  },
+  {
+    title: "Primeros avances",
+    slug: "primeros-avances",
+    modality: "online",
+    type: "meeting",
+    startDate: "2026-04-20T10:00:00",
+    location: "Virtual",
+  },
+];
+
+const shownUpcoming = upcomingEvents.length > 0 ? upcomingEvents : fallbackUpcoming;
+const shownPast = pastEvents.length > 0 ? pastEvents.slice(0, 2) : fallbackPast;
+---
+
+<section id="actividades" class="border-b border-line bg-white py-24 lg:py-32">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="max-w-3xl">
+      <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+        04 — Vida del capítulo
+      </p>
+      <h2 class="font-serif text-3xl font-semibold leading-tight text-navy lg:text-5xl">
+        Actividades y eventos
+      </h2>
+      <p class="mt-6 text-lg leading-relaxed text-ink/70">
+        La actividad académica y comunitaria del capítulo SIAM Cali será constante. Organizamos y participamos en distintos espacios a lo largo del año.
+      </p>
+    </div>
+
+    <ul class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <li class="rounded-xl border border-line bg-cream/50 p-6">
+        <h3 class="font-serif text-lg font-semibold text-navy">Charlas y conferencias</h3>
+        <p class="mt-3 text-[0.95rem] leading-relaxed text-ink/75">
+          Académicos, investigadores y profesionales — locales, nacionales e internacionales — comparten su trabajo con el capítulo. Contamos con recursos para cubrir honorarios, tiquetes, alojamiento y alimentación.
+        </p>
+      </li>
+      <li class="rounded-xl border border-line bg-cream/50 p-6">
+        <h3 class="font-serif text-lg font-semibold text-navy">Charlas de nivelación matemática</h3>
+        <p class="mt-3 text-[0.95rem] leading-relaxed text-ink/75">
+          Sesiones internas de formación en computación científica, cálculo, álgebra lineal y probabilidad, para fortalecer las bases del grupo y preparar a sus integrantes para proyectos avanzados.
+        </p>
+      </li>
+      <li class="rounded-xl border border-line bg-cream/50 p-6">
+        <h3 class="font-serif text-lg font-semibold text-navy">Debates académicos</h3>
+        <p class="mt-3 text-[0.95rem] leading-relaxed text-ink/75">
+          Espacios de discusión abierta sobre artículos, problemas y tendencias en matemáticas aplicadas, computación e inteligencia artificial. Cualquier integrante puede proponer un tema.
+        </p>
+      </li>
+      <li class="rounded-xl border border-line bg-cream/50 p-6">
+        <h3 class="font-serif text-lg font-semibold text-navy">Actividades de integración</h3>
+        <p class="mt-3 text-[0.95rem] leading-relaxed text-ink/75">
+          Más allá de lo académico, nos reunimos para conocernos y construir comunidad. Un buen equipo humano es la base de cualquier proyecto sólido.
+        </p>
+      </li>
+      <li class="rounded-xl border border-line bg-cream/50 p-6 md:col-span-2 lg:col-span-1">
+        <h3 class="font-serif text-lg font-semibold text-navy">Proyectos colaborativos</h3>
+        <p class="mt-3 text-[0.95rem] leading-relaxed text-ink/75">
+          Iniciativas de investigación y desarrollo lideradas por integrantes del capítulo, con apoyo de profesores y, cuando aplica, de recursos de SIAM internacional.
+        </p>
+      </li>
+    </ul>
+
+    <div class="mt-20 grid gap-8 lg:grid-cols-2">
+      <div>
+        <h3 class="mb-6 flex items-center gap-3 font-serif text-2xl font-semibold text-navy">
+          <span class="h-2 w-2 animate-pulse rounded-full bg-accent"></span>
+          Próximos eventos
+        </h3>
+        <div class="space-y-5">
+          {shownUpcoming.slice(0, 2).map((event) => <EventCard event={event} />)}
+        </div>
+      </div>
+
+      <div>
+        <h3 class="mb-6 flex items-center gap-3 font-serif text-2xl font-semibold text-navy">
+          <span class="h-2 w-2 rounded-full bg-ink/30"></span>
+          Eventos pasados
+        </h3>
+        <div class="space-y-5">
+          {shownPast.map((event) => <EventCard event={event} />)}
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10">
+      <a href="/eventos" class="inline-flex items-center gap-2 rounded-full bg-navy px-7 py-3 font-semibold text-cream transition hover:bg-deep">
+        Ver todos los eventos
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>

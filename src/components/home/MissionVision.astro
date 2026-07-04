@@ -1,0 +1,47 @@
+---
+const { settings } = Astro.props;
+---
+
+<section id="mision" class="border-b border-line bg-white py-24 lg:py-32">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="max-w-3xl">
+      <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+        02 — Propósito
+      </p>
+      <h2 class="font-serif text-3xl font-semibold leading-tight text-navy lg:text-5xl">
+        Misión y visión
+      </h2>
+    </div>
+
+    <div class="mt-14 grid gap-6 md:grid-cols-2 lg:gap-8">
+      <article class="relative rounded-2xl border border-line bg-cream p-8 lg:p-10">
+        <div class="mb-5 flex items-center gap-3">
+          <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-navy font-serif text-cream">
+            M
+          </span>
+          <h3 class="font-serif text-2xl font-semibold text-navy">
+            Misión
+          </h3>
+        </div>
+        <p class="text-lg leading-relaxed text-ink/80">
+          {settings?.mission ||
+            "Fomentar la aplicación de las matemáticas y la computación científica en la solución de problemas reales, fortaleciendo una comunidad estudiantil interdisciplinar en Cali que conecte el conocimiento académico con impacto social y tecnológico."}
+        </p>
+      </article>
+
+      <article class="relative rounded-2xl bg-navy p-8 text-cream lg:p-10">
+        <div class="mb-5 flex items-center gap-3">
+          <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-accent font-serif text-deep">
+            V
+          </span>
+          <h3 class="font-serif text-2xl font-semibold text-cream">
+            Visión
+          </h3>
+        </div>
+        <p class="text-lg leading-relaxed text-cream/85">
+          Ser reconocidos como un espacio de referencia en matemáticas aplicadas para estudiantes del suroccidente colombiano, generando conexiones sólidas con la academia, la industria y la sociedad, e inspirando a nuevas generaciones a ver en las matemáticas una herramienta de transformación.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>

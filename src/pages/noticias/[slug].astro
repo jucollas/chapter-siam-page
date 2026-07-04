@@ -1,0 +1,112 @@
+---
+export const prerender = false;
+
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/common/Navbar.astro";
+import Footer from "../../components/common/Footer.astro";
+import PortableText from "../../components/common/PortableText.astro";
+
+import { sanityClient } from "sanity:client";
+import { newsBySlugQuery } from "../../lib/queries";
+
+const { slug } = Astro.params;
+const post = await sanityClient.fetch(newsBySlugQuery, { slug });
+
+if (!post) {
+  return Astro.redirect("/noticias");
+}
+
+const date = post.publishedAt
+  ? new Date(post.publishedAt).toLocaleDateString("es-CO", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  : "";
+---
+
+<Layout>
+  <Navbar />
+
+  <main class="bg-cream">
+    <article>
+      <section class="bg-deep px-6 py-20 text-cream">
+        <div class="mx-auto max-w-4xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.25em] text-accent">
+            {post.category} · {date}
+          </p>
+
+          <h1 class="mt-4 font-serif text-4xl font-semibold leading-tight md:text-6xl">
+            {post.title}
+          </h1>
+
+          {post.excerpt && (
+            <p class="mt-6 text-lg leading-8 text-cream/75">
+              {post.excerpt}
+            </p>
+          )}
+        </div>
+      </section>
+
+      <div class="mx-auto max-w-4xl px-6 py-14">
+        {post.coverImageUrl && (
+          <img
+            src={post.coverImageUrl}
+            alt={post.title}
+            class="mb-10 rounded-3xl border border-line"
+          />
+        )}
+
+        {post.body && <PortableText value={post.body} />}
+
+        {post.documents?.length > 0 && (
+          <section class="mt-12 rounded-3xl border border-line bg-white p-8">
+            <h2 class="font-serif text-3xl font-semibold text-ink">
+              Documentos
+            </h2>
+
+            <ul class="mt-5 space-y-3">
+              {post.documents.map((doc) => (
+                <li>
+                  <a
+                    href={doc.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="font-semibold text-navy underline decoration-accent underline-offset-4"
+                  >
+                    {doc.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {post.links?.length > 0 && (
+          <section class="mt-8 rounded-3xl border border-line bg-white p-8">
+            <h2 class="font-serif text-3xl font-semibold text-ink">
+              Links importantes
+            </h2>
+
+            <ul class="mt-5 space-y-3">
+              {post.links.map((link) => (
+                <li>
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="font-semibold text-navy underline decoration-accent underline-offset-4"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </div>
+    </article>
+  </main>
+
+  <Footer />
+</Layout>

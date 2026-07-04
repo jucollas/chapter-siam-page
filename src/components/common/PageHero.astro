@@ -1,0 +1,26 @@
+---
+const { eyebrow, title, description } = Astro.props;
+---
+
+<section class="relative overflow-hidden bg-navy text-cream">
+  <div class="absolute inset-0 math-grid opacity-50" aria-hidden="true"></div>
+  <div class="absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full ring-glow" aria-hidden="true"></div>
+
+  <div class="relative mx-auto max-w-7xl px-5 py-24 lg:px-8">
+    {eyebrow && (
+      <p class="mb-6 text-xs font-medium uppercase tracking-[0.25em] text-accent lg:text-sm">
+        {eyebrow}
+      </p>
+    )}
+
+    <h1 class="max-w-4xl font-serif text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-7xl">
+      {title}
+    </h1>
+
+    {description && (
+      <p class="mt-8 max-w-2xl text-base leading-relaxed text-cream/70 lg:text-lg">
+        {description}
+      </p>
+    )}
+  </div>
+</section>
