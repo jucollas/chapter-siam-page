@@ -1,0 +1,279 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/common/Navbar.astro";
+import Footer from "../components/common/Footer.astro";
+import ResourceCard from "../components/cards/ResourceCard.astro";
+
+import { sanityClient } from "sanity:client";
+import { resourcesQuery } from "../lib/queries";
+
+const resources = await sanityClient.fetch(resourcesQuery);
+
+const fallbackResources = [
+  {
+    title: "Sitio oficial de SIAM",
+    description:
+      "Publicaciones, eventos internacionales, recursos académicos y oportunidades para capítulos estudiantiles.",
+    category: "link",
+    url: "https://www.siam.org",
+  },
+  {
+    title: "SIAM Student Chapters",
+    description:
+      "Información oficial sobre capítulos estudiantiles, beneficios, lineamientos y oportunidades de participación.",
+    category: "link",
+    url: "https://www.siam.org/students-education/programs-initiatives/student-chapters",
+  },
+  {
+    title: "Presentación oficial del capítulo",
+    description:
+      "Documento de presentación institucional del Capítulo Estudiantil SIAM Cali.",
+    category: "document",
+  },
+  {
+    title: "Materiales de nivelación matemática",
+    description:
+      "Presentaciones, notas y materiales de apoyo para sesiones internas de formación en matemáticas y computación científica.",
+    category: "workshop_material",
+  },
+  {
+    title: "Apoyo económico SIAM",
+    description:
+      "Recursos anuales destinados a apoyar charlas, invitados académicos, actividades del capítulo y participación de integrantes en espacios académicos.",
+    category: "document",
+  },
+  {
+    title: "Repositorio del capítulo",
+    description:
+      "Espacio para organizar código, materiales, proyectos y recursos técnicos desarrollados por integrantes del capítulo.",
+    category: "repository",
+  },
+];
+
+const shownResources = resources.length > 0 ? resources : fallbackResources;
+
+const documents = shownResources.filter((resource) =>
+  ["document", "call"].includes(resource.category)
+);
+
+const links = shownResources.filter((resource) =>
+  ["link", "repository"].includes(resource.category)
+);
+
+const materials = shownResources.filter((resource) =>
+  resource.category === "workshop_material"
+);
+
+const others = shownResources.filter((resource) =>
+  !["document", "call", "link", "repository", "workshop_material"].includes(resource.category)
+);
+---
+
+<Layout>
+  <div class="bg-cream text-ink antialiased">
+    <Navbar />
+
+    <main>
+      <section class="relative overflow-hidden bg-navy text-cream">
+        <div class="absolute inset-0 math-grid opacity-50" aria-hidden="true"></div>
+        <div class="absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full ring-glow" aria-hidden="true"></div>
+
+        <div class="relative mx-auto max-w-7xl px-5 py-24 lg:px-8 lg:py-32">
+          <p class="mb-6 text-xs font-medium uppercase tracking-[0.25em] text-accent lg:text-sm">
+            06 — Recursos
+          </p>
+
+          <h1 class="max-w-4xl font-serif text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-7xl">
+            Recursos y comunidad
+          </h1>
+
+          <p class="mt-8 max-w-2xl text-base leading-relaxed text-cream/70 lg:text-lg">
+            Documentos, enlaces, materiales, repositorios y recursos importantes
+            para los integrantes del Capítulo SIAM Cali.
+          </p>
+        </div>
+      </section>
+
+      <section class="border-b border-line py-24 lg:py-32">
+        <div class="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-12 lg:px-8">
+          <div class="lg:col-span-4">
+            <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+              Acceso académico
+            </p>
+
+            <h2 class="font-serif text-3xl font-semibold leading-tight text-navy lg:text-5xl">
+              Materiales para aprender, compartir y construir.
+            </h2>
+
+            <p class="mt-6 text-lg leading-relaxed text-ink/70">
+              Como capítulo afiliado a SIAM internacional, accedemos a una red
+              global de recursos académicos y profesionales. Esta sección reúne
+              documentos internos, enlaces oficiales, materiales de talleres y
+              recursos recomendados.
+            </p>
+          </div>
+
+          <div class="grid gap-5 sm:grid-cols-2 lg:col-span-8">
+            <article class="rounded-xl bg-navy p-6 text-cream">
+              <p class="text-xs uppercase tracking-widest text-accent">
+                Beneficio
+              </p>
+              <h3 class="mt-2 font-serif text-2xl">
+                Red internacional SIAM
+              </h3>
+              <p class="mt-4 text-sm leading-relaxed text-cream/75">
+                Conexión con publicaciones, eventos, oportunidades estudiantiles
+                y una comunidad global de matemáticas aplicadas.
+              </p>
+            </article>
+
+            <article class="rounded-xl border border-line bg-white p-6">
+              <p class="text-xs uppercase tracking-widest text-accent">
+                Organización
+              </p>
+              <h3 class="mt-2 font-serif text-2xl text-navy">
+                Recursos del capítulo
+              </h3>
+              <p class="mt-4 text-sm leading-relaxed text-ink/75">
+                Materiales descargables, documentos oficiales, enlaces útiles y
+                repositorios para apoyar las actividades del grupo.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {documents.length > 0 && (
+        <section class="border-b border-line bg-white py-24 lg:py-32">
+          <div class="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-12 lg:px-8">
+            <div class="lg:col-span-4">
+              <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+                Documentos
+              </p>
+
+              <h2 class="font-serif text-3xl font-semibold leading-tight text-navy lg:text-5xl">
+                Documentos descargables
+              </h2>
+
+              <p class="mt-6 text-lg leading-relaxed text-ink/70">
+                Presentaciones, formatos, convocatorias y archivos importantes
+                para las actividades del capítulo.
+              </p>
+            </div>
+
+            <ul class="space-y-5 lg:col-span-8">
+              {documents.map((resource) => (
+                <ResourceCard resource={resource} />
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {materials.length > 0 && (
+        <section class="border-b border-line py-24 lg:py-32">
+          <div class="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-12 lg:px-8">
+            <div class="lg:col-span-4">
+              <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+                Formación
+              </p>
+
+              <h2 class="font-serif text-3xl font-semibold leading-tight text-navy lg:text-5xl">
+                Materiales de talleres y nivelación
+              </h2>
+
+              <p class="mt-6 text-lg leading-relaxed text-ink/70">
+                Recursos usados en sesiones internas de formación en matemáticas,
+                programación, computación científica e investigación aplicada.
+              </p>
+            </div>
+
+            <ul class="space-y-5 lg:col-span-8">
+              {materials.map((resource) => (
+                <ResourceCard resource={resource} />
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {links.length > 0 && (
+        <section class="border-b border-line bg-white py-24 lg:py-32">
+          <div class="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-12 lg:px-8">
+            <div class="lg:col-span-4">
+              <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+                Enlaces
+              </p>
+
+              <h2 class="font-serif text-3xl font-semibold leading-tight text-navy lg:text-5xl">
+                Links importantes
+              </h2>
+
+              <p class="mt-6 text-lg leading-relaxed text-ink/70">
+                Accesos rápidos a páginas oficiales, repositorios, redes y
+                plataformas relevantes para el capítulo.
+              </p>
+            </div>
+
+            <ul class="space-y-5 lg:col-span-8">
+              {links.map((resource) => (
+                <ResourceCard resource={resource} />
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {others.length > 0 && (
+        <section class="border-b border-line py-24 lg:py-32">
+          <div class="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-12 lg:px-8">
+            <div class="lg:col-span-4">
+              <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+                Otros recursos
+              </p>
+
+              <h2 class="font-serif text-3xl font-semibold leading-tight text-navy lg:text-5xl">
+                Recursos adicionales
+              </h2>
+            </div>
+
+            <ul class="space-y-5 lg:col-span-8">
+              {others.map((resource) => (
+                <ResourceCard resource={resource} />
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      <section class="relative overflow-hidden bg-navy py-24 text-cream lg:py-32">
+        <div class="absolute inset-0 math-grid opacity-30" aria-hidden="true"></div>
+
+        <div class="relative mx-auto max-w-4xl px-5 text-center lg:px-8">
+          <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+            Comparte
+          </p>
+
+          <h2 class="font-serif text-4xl font-semibold leading-tight lg:text-6xl">
+            ¿Tienes un recurso para el capítulo?
+          </h2>
+
+          <p class="mt-8 text-lg leading-relaxed text-cream/80">
+            Puedes proponer documentos, enlaces, libros, cursos, repositorios o
+            materiales que ayuden a fortalecer la formación de la comunidad.
+          </p>
+
+          <a
+            href="/contacto"
+            class="mt-10 inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-lg font-semibold text-deep transition hover:bg-accent/90"
+          >
+            Proponer recurso
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>

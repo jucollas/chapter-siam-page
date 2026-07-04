@@ -1,12 +1,56 @@
 ---
-//import Welcome from '../components/Welcome.astro';
-import Landing from '../components/Landing.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/common/Navbar.astro";
+import Footer from "../components/common/Footer.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import HomeHero from "../components/home/HomeHero.astro";
+import AboutChapter from "../components/home/AboutChapter.astro";
+import MissionVision from "../components/home/MissionVision.astro";
+import ResearchAreas from "../components/home/ResearchAreas.astro";
+import ActivitiesPreview from "../components/home/ActivitiesPreview.astro";
+import FeaturedNews from "../components/home/FeaturedNews.astro";
+import TeamPreview from "../components/home/TeamPreview.astro";
+import ResourcesPreview from "../components/home/ResourcesPreview.astro";
+import JoinCTA from "../components/home/JoinCTA.astro";
+
+import { sanityClient } from "sanity:client";
+import {
+  siteSettingsQuery,
+  featuredNewsQuery,
+  upcomingEventsQuery,
+  pastEventsQuery,
+  featuredPeopleQuery,
+  resourcesQuery,
+} from "../lib/queries";
+
+const settings = await sanityClient.fetch(siteSettingsQuery);
+const posts = await sanityClient.fetch(featuredNewsQuery);
+const upcomingEvents = await sanityClient.fetch(upcomingEventsQuery);
+const pastEvents = await sanityClient.fetch(pastEventsQuery);
+const people = await sanityClient.fetch(featuredPeopleQuery);
+const resources = await sanityClient.fetch(resourcesQuery);
 ---
 
 <Layout>
-	<Landing />
+  <div class="bg-cream text-ink antialiased">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:rounded-md focus:bg-navy focus:px-4 focus:py-2 focus:text-white">
+      Saltar al contenido
+    </a>
+
+    <Navbar />
+
+    <main id="main">
+      <HomeHero settings={settings} />
+      <AboutChapter />
+      <MissionVision settings={settings} />
+      <ResearchAreas />
+      <ActivitiesPreview upcomingEvents={upcomingEvents} pastEvents={pastEvents} />
+      <FeaturedNews posts={posts} />
+      <TeamPreview people={people} />
+      <ResourcesPreview resources={resources} />
+      <JoinCTA />
+    </main>
+
+    <Footer />
+  </div>
 </Layout>

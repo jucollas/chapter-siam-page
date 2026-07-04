@@ -1,0 +1,7 @@
+---
+import TeamDirectory from "../common/TeamDirectory.astro";
+
+const { people = [] } = Astro.props;
+---
+
+<TeamDirectory people={people} showIntro={true} showFullLink={true} />

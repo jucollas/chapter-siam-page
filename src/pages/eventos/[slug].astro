@@ -1,0 +1,101 @@
+---
+export const prerender = false;
+
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/common/Navbar.astro";
+import Footer from "../../components/common/Footer.astro";
+import PortableText from "../../components/common/PortableText.astro";
+
+import { sanityClient } from "sanity:client";
+import { eventBySlugQuery } from "../../lib/queries";
+
+const { slug } = Astro.params;
+const event = await sanityClient.fetch(eventBySlugQuery, { slug });
+
+if (!event) {
+  return Astro.redirect("/eventos");
+}
+
+const date = new Date(event.startDate).toLocaleString("es-CO", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  hour: "numeric",
+  minute: "2-digit",
+});
+---
+
+<Layout>
+  <Navbar />
+
+  <main class="bg-cream">
+    <article>
+      <section class="bg-deep px-6 py-20 text-cream">
+        <div class="mx-auto max-w-4xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.25em] text-accent">
+            {event.type}
+          </p>
+
+          <h1 class="mt-4 font-serif text-4xl font-semibold leading-tight md:text-6xl">
+            {event.title}
+          </h1>
+
+          <div class="mt-6 space-y-2 text-cream/75">
+            <p>{date}</p>
+            {event.location && <p>Lugar: {event.location}</p>}
+            {event.modality && <p>Modalidad: {event.modality}</p>}
+            {event.speaker && <p>Ponente: {event.speaker}</p>}
+          </div>
+
+          {event.registrationLink && (
+            <a
+              href={event.registrationLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-8 inline-block rounded-full bg-accent px-6 py-3 font-semibold text-ink"
+            >
+              Inscribirse
+            </a>
+          )}
+        </div>
+      </section>
+
+      <div class="mx-auto max-w-4xl px-6 py-14">
+        {event.posterUrl && (
+          <img
+            src={event.posterUrl}
+            alt={event.title}
+            class="mb-10 rounded-3xl border border-line"
+          />
+        )}
+
+        {event.description && <PortableText value={event.description} />}
+
+        {event.materials?.length > 0 && (
+          <section class="mt-12 rounded-3xl border border-line bg-white p-8">
+            <h2 class="font-serif text-3xl font-semibold text-ink">
+              Materiales
+            </h2>
+
+            <ul class="mt-5 space-y-3">
+              {event.materials.map((material) => (
+                <li>
+                  <a
+                    href={material.fileUrl || material.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="font-semibold text-navy underline decoration-accent underline-offset-4"
+                  >
+                    {material.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </div>
+    </article>
+  </main>
+
+  <Footer />
+</Layout>

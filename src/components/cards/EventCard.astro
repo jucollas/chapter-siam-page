@@ -1,0 +1,60 @@
+---
+const { event } = Astro.props;
+
+const date = event?.startDate ? new Date(event.startDate) : null;
+const dateLabel = date
+  ? date.toLocaleDateString("es-CO", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  : "";
+
+const modalityLabels = {
+  in_person: "Presencial",
+  online: "Virtual",
+  hybrid: "Híbrido",
+};
+
+const typeLabels = {
+  event: "Evento",
+  talk: "Charla",
+  workshop: "Taller",
+  meeting: "Reunión",
+};
+---
+
+<article class="rounded-2xl border border-line bg-white p-7 transition hover:-translate-y-1 hover:shadow-lg">
+  <div class="mb-4 flex flex-wrap items-center gap-3">
+    <span class="text-xs font-semibold uppercase tracking-wide text-accent">
+      {modalityLabels[event?.modality] || event?.modality || typeLabels[event?.type] || "Actividad"}
+    </span>
+    {dateLabel && (
+      <>
+        <span class="text-ink/40">·</span>
+        <time class="text-sm text-ink/70">{dateLabel}</time>
+      </>
+    )}
+  </div>
+
+  <h3 class="font-serif text-xl font-semibold text-navy">
+    {event.title}
+  </h3>
+
+  {event?.speaker && (
+    <p class="mt-3 text-[0.95rem] leading-relaxed text-ink/75">
+      Ponente: {event.speaker}
+    </p>
+  )}
+
+  {event?.location && (
+    <p class="mt-1 text-[0.95rem] leading-relaxed text-ink/75">
+      {event.location}
+    </p>
+  )}
+
+  <a href={`/eventos/${event.slug}`} class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-navy transition hover:text-accent">
+    Ver detalles
+    <span aria-hidden="true">→</span>
+  </a>
+</article>

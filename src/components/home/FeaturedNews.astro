@@ -1,0 +1,43 @@
+---
+import NewsCard from "../cards/NewsCard.astro";
+
+const { posts = [] } = Astro.props;
+---
+
+<section id="noticias" class="border-b border-line py-24 lg:py-32">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="max-w-3xl">
+      <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+        Noticias — Blog del capítulo
+      </p>
+      <h2 class="font-serif text-3xl font-semibold leading-tight text-navy lg:text-5xl">
+        Noticias y avances recientes
+      </h2>
+      <p class="mt-6 text-lg leading-relaxed text-ink/70">
+        Un espacio para registrar las actividades, anuncios, documentos, imágenes y enlaces importantes de lo que se va construyendo en el Capítulo SIAM Cali.
+      </p>
+    </div>
+
+    <div class="mt-14">
+      {posts.length > 0 ? (
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {posts.map((post) => <NewsCard post={post} />)}
+        </div>
+      ) : (
+        <div class="rounded-2xl border border-line bg-white p-7">
+          <h3 class="font-serif text-xl font-semibold text-navy">
+            Aún no hay noticias publicadas
+          </h3>
+          <p class="mt-3 text-[0.95rem] leading-relaxed text-ink/75">
+            Desde el panel de administración podrás publicar noticias con contexto, imágenes, documentos descargables y links importantes.
+          </p>
+        </div>
+      )}
+    </div>
+
+    <a href="/noticias" class="mt-10 inline-flex items-center gap-2 rounded-full border border-line px-7 py-3 font-semibold text-navy transition hover:border-navy">
+      Ver todas las noticias
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>

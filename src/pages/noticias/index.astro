@@ -1,0 +1,45 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/common/Navbar.astro";
+import Footer from "../../components/common/Footer.astro";
+import PageHero from "../../components/common/PageHero.astro";
+import NewsCard from "../../components/cards/NewsCard.astro";
+
+import { sanityClient } from "sanity:client";
+import { allNewsQuery } from "../../lib/queries";
+
+const posts = await sanityClient.fetch(allNewsQuery);
+---
+
+<Layout>
+  <div class="bg-cream text-ink antialiased">
+    <Navbar />
+
+    <PageHero
+      eyebrow="Noticias — Blog del capítulo"
+      title="Noticias y avances recientes"
+      description="Un espacio para registrar las actividades, anuncios, documentos, imágenes y enlaces importantes de lo que se va construyendo en el Capítulo SIAM Cali."
+    />
+
+    <main class="border-b border-line py-24 lg:py-32">
+      <div class="mx-auto max-w-7xl px-5 lg:px-8">
+        {posts.length > 0 ? (
+          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {posts.map((post) => <NewsCard post={post} />)}
+          </div>
+        ) : (
+          <article class="rounded-2xl border border-line bg-white p-7">
+            <h2 class="font-serif text-xl font-semibold text-navy">
+              Aún no hay noticias publicadas
+            </h2>
+            <p class="mt-3 text-[0.95rem] leading-relaxed text-ink/75">
+              Desde Sanity podrás añadir noticias con contexto, imágenes, documentos descargables y links importantes.
+            </p>
+          </article>
+        )}
+      </div>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>
